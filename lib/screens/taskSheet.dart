@@ -22,7 +22,7 @@ class Tasksheet extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: TextFormField(
-                    decoration: InputDecoration(hintText: "Enter Task Title"),validator:  ,
+                    decoration: InputDecoration(hintText: "Enter Task Title") ,
                   ),
                 ),
                 Padding(
