@@ -20,21 +20,33 @@ class MyThemeData {
               fontWeight: FontWeight.bold,
               color: Appcolors.whiteColor)),
       floatingActionButtonTheme:
-          FloatingActionButtonThemeData(backgroundColor: Appcolors.blueColor));
+          FloatingActionButtonThemeData(backgroundColor: Appcolors.blueColor),
+      bottomSheetTheme: BottomSheetThemeData(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(color: Appcolors.blueColor, width: 2))));
   static final ThemeData darkTheme = ThemeData(
-      primaryColor: Appcolors.blueColor,
-      scaffoldBackgroundColor: Appcolors.backgroundDarkColor,
-      appBarTheme: AppBarTheme(
-        color: Appcolors.blueColor,
-        elevation: 0,
-      ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          unselectedItemColor: Appcolors.grey,
-          selectedItemColor: Appcolors.blueColor,
-          showUnselectedLabels: false),
-      textTheme: TextTheme(
-          bodyLarge: GoogleFonts.poppins(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Appcolors.blackColorText)));
+    primaryColor: Appcolors.blueColor,
+    scaffoldBackgroundColor: Appcolors.backgroundDarkColor,
+    appBarTheme: AppBarTheme(
+      color: Appcolors.blueColor,
+      elevation: 0,
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        unselectedItemColor: Appcolors.grey,
+        selectedItemColor: Appcolors.blueColor,
+        showUnselectedLabels: false),
+    textTheme: TextTheme(
+        bodyLarge: GoogleFonts.poppins(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Appcolors.blackColorText)),
+    floatingActionButtonTheme:
+        FloatingActionButtonThemeData(backgroundColor: Appcolors.blueColor),
+    bottomSheetTheme: BottomSheetThemeData(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: Appcolors.blueColor, width: 2))),
+    
+  );
 }

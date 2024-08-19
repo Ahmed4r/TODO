@@ -4,7 +4,8 @@ import 'package:todolist/appcolor.dart';
 import 'package:todolist/screens/Task_listscreen.dart';
 import 'package:todolist/screens/settingscreen.dart';
 import 'package:todolist/screens/taskSheet.dart';
-import 'package:todolist/themeData.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Homepage extends StatefulWidget {
   static const String routeName = "Homepage";
@@ -24,7 +25,7 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height * 0.25,
         title: Text(
-          "ToDo List",
+          AppLocalizations.of(context)!.app_title,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       ),

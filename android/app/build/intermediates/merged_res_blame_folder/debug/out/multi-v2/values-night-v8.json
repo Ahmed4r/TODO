@@ -1,0 +1,28 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.example.todolist.app-mergeDebugResources-28:/values-night-v8/values-night-v8.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\ahmed\\flutter_route\\todolist\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "from": {
+                        "startLines": "3,18",
+                        "startColumns": "4,4",
+                        "startOffsets": "172,1089",
+                        "endLines": "11,20",
+                        "endColumns": "12,12",
+                        "endOffsets": "742,1253"
+                    },
+                    "to": {
+                        "startLines": "2,10",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,502",
+                        "endLines": "9,12",
+                        "endColumns": "12,12",
+                        "endOffsets": "497,666"
+                    }
+                }
+            ]
+        }
+    ]
+}
