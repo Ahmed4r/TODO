@@ -1,6 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist/appcolor.dart';
+import 'package:todolist/firebase/firebase_utils.dart';
+import 'package:todolist/model/task.dart';
+import 'package:todolist/providers/list_provider.dart';
 
 class Tasksheet extends StatefulWidget {
   static final formkey = GlobalKey<FormState>();
@@ -13,9 +17,11 @@ class _TasksheetState extends State<Tasksheet> {
   String title = '';
   String description = '';
   var selctedDate = DateTime.now();
+  late ListProvider listprovider;
 
   @override
   Widget build(BuildContext context) {
+    listprovider = Provider.of<ListProvider>(context);
     return Container(
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.height * 0.6,
@@ -108,7 +114,20 @@ class _TasksheetState extends State<Tasksheet> {
   }
 
   void addtask() {
-    if (Tasksheet.formkey.currentState?.validate() == true) {}
+    if (Tasksheet.formkey.currentState?.validate() == true) {
+      Task task =
+          Task(title: title, description: description, dateTime: selctedDate);
+      FirebaseUtils.addTaskToFireStore(task).timeout(
+        Duration(seconds: 1),
+        onTimeout: () {
+          print('task added succesffully');
+          listprovider.getAllTaskFromFireStore();
+          Navigator.pop(context);
+        }, 
+      );
+
+      // offline;
+    }
   }
 
   void showcalnder() async {

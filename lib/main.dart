@@ -1,18 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/providers/app_config_provider.dart';
+import 'package:todolist/providers/list_provider.dart';
 import 'package:todolist/screens/homepage.dart';
 import 'package:todolist/themeData.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  // debugPaintSizeEnabled = true;
-  runApp(ChangeNotifierProvider(
-    create: (context) => AppConfigProvider(),
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: "AIzaSyDymZM3RlO__BAhKYOPbRgTYUZ-gyHojDo",
+          appId: "com.example.todolist",
+          messagingSenderId: "8348827972",
+          projectId: "todo-65018"));
+  await FirebaseFirestore.instance.disableNetwork();
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (context) => AppConfigProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => ListProvider(),
+      )
+    ],
     child: TodoList(),
   ));
 }

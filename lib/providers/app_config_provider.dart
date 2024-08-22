@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppConfigProvider extends ChangeNotifier {
 //data when changes it change more than widget in local
-  String applanguage = 'ar';
+  String applanguage = 'en';
   ThemeMode appTheme = ThemeMode.light;
   void changeLanguage(String newLanguage) {
     if (applanguage == newLanguage) {
@@ -27,4 +27,5 @@ class AppConfigProvider extends ChangeNotifier {
   bool isdarkmode() {
     return appTheme == ThemeMode.dark;
   }
+  
 }
