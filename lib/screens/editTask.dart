@@ -11,21 +11,34 @@ import 'package:todolist/providers/list_provider.dart';
 
 class Edittask extends StatefulWidget {
   static final formkey = GlobalKey<FormState>();
-  const Edittask({super.key});
+  final Task
+      task; // Add a Task parameter to initialize the screen with existing data
+
+  const Edittask({super.key, required this.task});
 
   @override
   State<Edittask> createState() => _EdittaskState();
 }
 
 class _EdittaskState extends State<Edittask> {
-  String title = '';
-  String description = '';
-  var selctedDate = DateTime.now();
+  late String title;
+  late String description;
+  late DateTime selctedDate;
+  late ListProvider listprovider;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize with existing task data
+    title = widget.task.title;
+    description = widget.task.description;
+    selctedDate = widget.task.dateTime;
+  }
 
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
-    var listprovider = Provider.of<ListProvider>(context);
+    listprovider = Provider.of<ListProvider>(context);
     return Container(
       color: provider.isdarkmode()
           ? Appcolors.blackColorCategory
@@ -51,6 +64,7 @@ class _EdittaskState extends State<Edittask> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
+                      initialValue: title,
                       style: TextStyle(
                         fontSize: 18,
                         color: provider.isdarkmode()
@@ -65,7 +79,7 @@ class _EdittaskState extends State<Edittask> {
                                   : Appcolors.blackColorCategory)),
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return "please enter task title";
+                          return "Please enter task title";
                         }
                         return null;
                       },
@@ -77,6 +91,7 @@ class _EdittaskState extends State<Edittask> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextFormField(
+                      initialValue: description,
                       style: TextStyle(
                         fontSize: 18,
                         color: provider.isdarkmode()
@@ -91,7 +106,7 @@ class _EdittaskState extends State<Edittask> {
                                   : Appcolors.blackColorCategory)),
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return "please enter task description";
+                          return "Please enter task description";
                         }
                         return null;
                       },
@@ -127,7 +142,7 @@ class _EdittaskState extends State<Edittask> {
                             fontSize: 18,
                             color: provider.isdarkmode()
                                 ? Color(0xffDBDBDB)
-                                : Color(0xffA9A9A99C)),
+                                : Color.fromARGB(169, 0, 0, 0)),
                       ),
                     ),
                   ),
@@ -171,9 +186,25 @@ class _EdittaskState extends State<Edittask> {
     }
   }
 
-  void editTaskFunc() {
+  void editTaskFunc() async {
     if (Edittask.formkey.currentState?.validate() == true) {
       Edittask.formkey.currentState?.save();
+
+      // Update the existing Task object with the new data
+      Task updatedTask = Task(
+        id: widget.task.id, // Ensure you pass the ID to update the correct task
+        title: title,
+        description: description,
+        dateTime: selctedDate,
+        isDone: widget.task.isDone, // Maintain the current completion status
+      );
+
+      await FirebaseUtils.updateTaskToFireStore(updatedTask)
+          .timeout(Duration(seconds: 1), onTimeout: () {
+        print('Task edited succesfully');
+        listprovider.getAllTaskFromFireStore();
+        Navigator.pop(context);
+      });
     }
   }
 }

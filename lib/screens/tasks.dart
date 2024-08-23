@@ -130,7 +130,9 @@ class Tasks extends StatelessWidget {
   void showeditscreen(context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => Edittask(),
+      builder: (context) => Edittask(
+        task: task,
+      ),
     );
   }
 }

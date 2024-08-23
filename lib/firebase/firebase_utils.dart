@@ -23,5 +23,11 @@ class FirebaseUtils {
     return getTasksCollection().doc(task.id).delete();
   }
 
-  
+  static Future<void> updateTaskToFireStore(Task taskobj) {
+    // return getTasksCollection().doc(taskobj.id).update(taskobj.toFirestore());
+    var taskCollection = getTasksCollection();
+    var taskDocRef = taskCollection.doc(taskobj.id);
+    taskobj.id = taskDocRef.id; //au
+    return taskDocRef.update(taskobj.toFirestore());
+  }
 }
