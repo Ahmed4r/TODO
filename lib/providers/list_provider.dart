@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todolist/firebase/firebase_utils.dart';
 import 'package:todolist/model/task.dart';
@@ -22,10 +23,13 @@ class ListProvider extends ChangeNotifier {
       },
     ).toList();
 
-    print(
-        'Filtered ${taskList.length} tasks for date $selectDate'); // Log the number of filtered tasks
+    // Log the number of filtered tasks
 
-    notifyListeners(); // Notify listeners after filtering
+    // Notify listeners after filtering
+    //sorting
+    taskList.sort((a, b) => a.dateTime.compareTo(b.dateTime));
+    
+    notifyListeners();
   }
 
   void changeSelectedDate(DateTime newDate) {

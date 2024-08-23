@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todolist/model/task.dart';
+import 'package:todolist/screens/tasks.dart';
 
 class FirebaseUtils {
   static CollectionReference<Task> getTasksCollection() {
@@ -7,8 +8,8 @@ class FirebaseUtils {
         .collection(Task.collectionName)
         .withConverter<Task>(
             fromFirestore: (snapshot, options) =>
-                Task.FromFireStore(snapshot.data()!),
-            toFirestore: (task, options) => task.ToFirestore());
+                Task.fromFirestore(snapshot.data()!),
+            toFirestore: (task, options) => task.toFirestore());
   }
 
   static Future<void> addTaskToFireStore(Task taskobj) {
@@ -17,4 +18,10 @@ class FirebaseUtils {
     taskobj.id = taskDocRef.id; //auto id
     return taskDocRef.set(taskobj);
   }
+
+  static Future<void> deleteTaskFromFireStore(Task task) {
+    return getTasksCollection().doc(task.id).delete();
+  }
+
+  
 }

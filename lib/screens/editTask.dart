@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 import 'package:todolist/appcolor.dart';
+import 'package:todolist/firebase/firebase_utils.dart';
+import 'package:todolist/model/task.dart';
 import 'package:todolist/providers/app_config_provider.dart';
+import 'package:todolist/providers/list_provider.dart';
 
 class Edittask extends StatefulWidget {
   static final formkey = GlobalKey<FormState>();
@@ -21,6 +25,7 @@ class _EdittaskState extends State<Edittask> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
+    var listprovider = Provider.of<ListProvider>(context);
     return Container(
       color: provider.isdarkmode()
           ? Appcolors.blackColorCategory
@@ -169,7 +174,6 @@ class _EdittaskState extends State<Edittask> {
   void editTaskFunc() {
     if (Edittask.formkey.currentState?.validate() == true) {
       Edittask.formkey.currentState?.save();
-      // Handle the edited task logic here
     }
   }
 }

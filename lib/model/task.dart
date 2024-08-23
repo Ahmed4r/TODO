@@ -7,32 +7,33 @@ class Task {
   String description;
   DateTime dateTime;
   bool isDone;
-  Task(
-      {this.id = '',
-      required this.title,
-      required this.description,
-      required this.dateTime,
-      this.isDone = false});
 
-  // obj => json
+  Task({
+    this.id = '',
+    required this.title,
+    required this.description,
+    required this.dateTime,
+    this.isDone = false,
+  });
 
-  Map<String, dynamic> ToFirestore() {
+  // Convert object to Firestore-compatible map
+  Map<String, dynamic> toFirestore() {
     return {
       'id': id,
       'title': title,
       'description': description,
-      'dateTime': dateTime.millisecondsSinceEpoch,
-      'isDone': isDone
+      'dateTime': Timestamp.fromDate(dateTime), // Convert DateTime to Timestamp
+      'isDone': isDone,
     };
   }
 
-  Task.FromFireStore(Map<String, dynamic> data)
-      : this(
-            id: data['id'] as String,
-            title: data['title'],
-            dateTime: data['dateTime'] != null
-                ? DateTime.fromMillisecondsSinceEpoch(data['dateTime'])
-                : DateTime.now(),
-            description: data['description'],
-            isDone: data['isDone']);
+  // Create object from Firestore map
+  Task.fromFirestore(Map<String, dynamic> data)
+      : id = data['id'] ?? '',
+        title = data['title'] ?? '',
+        description = data['description'] ?? '',
+        dateTime = data['dateTime'] is Timestamp
+            ? (data['dateTime'] as Timestamp).toDate()
+            : DateTime.now(), // Convert Timestamp to DateTime
+        isDone = data['isDone'] ?? false;
 }

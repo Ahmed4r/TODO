@@ -1,20 +1,21 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist/appcolor.dart';
+import 'package:todolist/firebase/firebase_utils.dart';
 import 'package:todolist/model/task.dart';
+import 'package:todolist/providers/list_provider.dart';
 import 'package:todolist/screens/editTask.dart';
 
-class Tasks extends StatefulWidget {
+class Tasks extends StatelessWidget {
   Task task;
   Tasks({required this.task});
 
   @override
-  State<Tasks> createState() => _TasksState();
-}
-
-class _TasksState extends State<Tasks> {
-  @override
   Widget build(BuildContext context) {
+    var listprovider = Provider.of<ListProvider>(context);
     return Container(
       margin: EdgeInsets.all(8),
       child: Slidable(
@@ -25,8 +26,20 @@ class _TasksState extends State<Tasks> {
             SlidableAction(
               borderRadius: BorderRadius.circular(15),
               onPressed: (context) {
-                // Delete task logic
+                try {
+                  FirebaseUtils.deleteTaskFromFireStore(task);
+                  listprovider.getAllTaskFromFireStore();
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Task Deleted successfully!')));
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to Delete Task: $e')),
+                  );
+                }
               },
+              // Delete task logic
+
               backgroundColor: const Color(0xFFFE4A49),
               foregroundColor: Colors.white,
               icon: Icons.delete,
@@ -35,7 +48,7 @@ class _TasksState extends State<Tasks> {
             SlidableAction(
               borderRadius: BorderRadius.circular(15),
               onPressed: (context) {
-                showeditscreen();
+                showeditscreen(context);
               },
               backgroundColor: Colors.greenAccent,
               foregroundColor: Colors.white,
@@ -66,7 +79,7 @@ class _TasksState extends State<Tasks> {
                         MainAxisSize.min, // Adjusts to available space
                     children: [
                       Text(
-                        widget.task.title,
+                        task.title,
                         style: TextStyle(
                           color: Appcolors.blueColor,
                           fontSize: 18,
@@ -78,7 +91,7 @@ class _TasksState extends State<Tasks> {
                         children: [
                           Expanded(
                             child: Text(
-                              widget.task.description,
+                              task.description,
                               style: TextStyle(
                                 color: Appcolors.blueColor,
                                 fontSize: 16,
@@ -114,7 +127,7 @@ class _TasksState extends State<Tasks> {
     );
   }
 
-  void showeditscreen() {
+  void showeditscreen(context) {
     showModalBottomSheet(
       context: context,
       builder: (context) => Edittask(),

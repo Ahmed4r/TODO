@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:todolist/providers/app_config_provider.dart';
 import 'package:todolist/providers/list_provider.dart';
 import 'package:todolist/screens/homepage.dart';
+import 'package:todolist/screens/login.dart';
+import 'package:todolist/screens/register_screen.dart';
 import 'package:todolist/themeData.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -44,8 +46,10 @@ class TodoList extends StatelessWidget {
       themeMode: provider.appTheme,
       theme: MyThemeData.ligthTheme,
       darkTheme: MyThemeData.darkTheme,
-      initialRoute: Homepage.routeName,
+      initialRoute: LoginScreen.routeName,
       routes: {
+        LoginScreen.routeName: (context) => LoginScreen(),
+        RegisterScreen.routeName: (context) => RegisterScreen(),
         Homepage.routeName: (context) => Homepage(),
       },
       debugShowCheckedModeBanner: false,

@@ -121,6 +121,7 @@ class _TasksheetState extends State<Tasksheet> {
         Duration(seconds: 1),
         onTimeout: () {
           print('task added succesffully');
+          
           listprovider.getAllTaskFromFireStore();
           Navigator.pop(context);
         }, 
