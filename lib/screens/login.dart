@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todolist/appcolor.dart';
 import 'package:todolist/screens/homepage.dart';
 import 'package:todolist/screens/regCat.dart';
 import 'package:todolist/screens/register_screen.dart';
 
+
 class LoginScreen extends StatefulWidget {
+  final GoogleSignIn googleSignIn = GoogleSignIn();
   static const String routeName = 'Login';
 
   LoginScreen({super.key});
@@ -15,9 +18,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController EmailController = TextEditingController(text: "ahmed@gmail.com");
+  TextEditingController EmailController = TextEditingController();
 
-  TextEditingController PasswordController = TextEditingController(text: "123456");
+  TextEditingController PasswordController = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
 
@@ -38,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text("Welcom Back"),
+                      child: Text("Welcome Back"),
                     ),
                     CustomTextFormField(
                       keyboardType: TextInputType.emailAddress,
@@ -85,6 +88,29 @@ class _LoginScreenState extends State<LoginScreen> {
                               .bodyLarge!
                               .copyWith(color: Appcolors.blackColorCategory),
                         )),
+                    Container(
+                      width: 300,
+                      height: 80,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                              // decoration: BoxDecoration(color: Colors.blue),
+                              child: Image.network(
+                                  'http://pngimg.com/uploads/google/google_PNG19635.png',
+                                  fit: BoxFit.cover)),
+                          SizedBox(
+                            width: 5.0,
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                signInWithGoogle();
+                              },
+                              child: Text('Sign-in with Google'))
+                        ],
+                      ),
+                    ),
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: TextButton(
@@ -122,11 +148,54 @@ class _LoginScreenState extends State<LoginScreen> {
               content: Text('Wrong password provided for that user.')));
         } else if (e.code == 'invalid-credential') {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('auth credential is inccorrect or not found .')));
+              content: Text('Auth credential is incorrect or not found.')));
         }
       } catch (e) {
         print(e);
       }
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser =
+          await widget.googleSignIn.signIn();
+
+      // If the user cancels the sign-in, googleUser will be null
+      if (googleUser == null) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Google Sign-In canceled.')));
+        return;
+      }
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Create a new credential
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Signed in as ${user.email}')));
+        Navigator.pushNamed(context, Homepage.routeName);
+      }
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Firebase auth error: ${e.message}')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Google sign-in failed: ${e.toString()}')));
     }
   }
 }

@@ -7,13 +7,10 @@ import 'package:todolist/screens/regCat.dart';
 class RegisterScreen extends StatelessWidget {
   static const String routeName = 'RegisterPage';
 
-  TextEditingController nameController = TextEditingController(text: "ahmed");
-  TextEditingController EmailController =
-      TextEditingController(text: "ahmed@gmail.com");
-  TextEditingController PasswordController =
-      TextEditingController(text: "123456");
-  TextEditingController ConfirmPasswordController =
-      TextEditingController(text: "123456");
+  TextEditingController nameController = TextEditingController();
+  TextEditingController EmailController = TextEditingController();
+  TextEditingController PasswordController = TextEditingController();
+  TextEditingController ConfirmPasswordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
   RegisterScreen({super.key});
 
@@ -133,7 +130,6 @@ class RegisterScreen extends StatelessWidget {
               content: Text('The account already exists for that email.')));
           Navigator.pushNamed(context, LoginScreen.routeName);
         }
-      
       } catch (e) {
         print(e);
       }

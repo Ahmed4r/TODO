@@ -1,22 +1,29 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/appcolor.dart';
 import 'package:todolist/firebase/firebase_utils.dart';
 import 'package:todolist/model/task.dart';
+import 'package:todolist/providers/app_config_provider.dart';
 import 'package:todolist/providers/list_provider.dart';
 import 'package:todolist/screens/editTask.dart';
 
-class Tasks extends StatelessWidget {
+class Tasks extends StatefulWidget {
   Task task;
   Tasks({required this.task});
 
   @override
+  State<Tasks> createState() => _TasksState();
+}
+
+class _TasksState extends State<Tasks> {
+  @override
   Widget build(BuildContext context) {
     var listprovider = Provider.of<ListProvider>(context);
+    var appprovider = Provider.of<AppConfigProvider>(context);
+
     return Container(
+      key: ValueKey(widget.task.id),
       margin: EdgeInsets.all(8),
       child: Slidable(
         startActionPane: ActionPane(
@@ -27,11 +34,13 @@ class Tasks extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               onPressed: (context) {
                 try {
-                  FirebaseUtils.deleteTaskFromFireStore(task);
+                  FirebaseUtils.deleteTaskFromFireStore(widget.task);
                   listprovider.getAllTaskFromFireStore();
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Task Deleted successfully!')));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Task Deleted successfully!'),
+                    duration: Duration(seconds: 2),
+                  ));
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Failed to Delete Task: $e')),
@@ -61,14 +70,16 @@ class Tasks extends StatelessWidget {
           padding: EdgeInsets.all(15),
           height: MediaQuery.of(context).size.height * 0.17, // Reduced height
           decoration: BoxDecoration(
-            color: Appcolors.whiteColor,
+            color: appprovider.isdarkmode()
+                ? Appcolors.blackColorCategory
+                : Appcolors.whiteColor,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Row(
             children: [
               VerticalDivider(
                 thickness: 3,
-                color: Colors.blue,
+                color: widget.task.isDone ? Appcolors.greenColor : Colors.blue,
               ),
               Expanded(
                 child: Padding(
@@ -79,9 +90,11 @@ class Tasks extends StatelessWidget {
                         MainAxisSize.min, // Adjusts to available space
                     children: [
                       Text(
-                        task.title,
+                        widget.task.title,
                         style: TextStyle(
-                          color: Appcolors.blueColor,
+                          color: widget.task.isDone
+                              ? Appcolors.greenColor
+                              : Appcolors.blueColor,
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
                         ),
@@ -91,9 +104,11 @@ class Tasks extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              task.description,
+                              widget.task.description,
                               style: TextStyle(
-                                color: Appcolors.blueColor,
+                                color: widget.task.isDone
+                                    ? Appcolors.greenColor
+                                    : Appcolors.blueColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -108,16 +123,38 @@ class Tasks extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
-                  // Task completion logic
+                onPressed: () async {
+                  try {
+                    setState(() {
+                      widget.task.isDone =
+                          !widget.task.isDone; // Toggle completion state in UI
+                    });
+                    await FirebaseUtils.updateTaskToFireStore(widget.task);
+                    listprovider
+                        .getAllTaskFromFireStore(); // Refresh tasks list after update
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to update task: $e')),
+                    );
+                  }
                 },
-                child: Icon(
-                  Icons.check,
-                  color: Colors.white,
-                  size: 30,
-                ),
+                child: widget.task.isDone
+                    ? Text(
+                        'Done!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      )
+                    : Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                  backgroundColor: MaterialStateProperty.all(widget.task.isDone
+                      ? Appcolors.greenColor
+                      : Appcolors.blueColor),
                 ),
               ),
             ],
@@ -130,7 +167,9 @@ class Tasks extends StatelessWidget {
   void showeditscreen(context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => Edittask(),
+      builder: (context) => Edittask(
+        task: widget.task,
+      ),
     );
   }
 }
