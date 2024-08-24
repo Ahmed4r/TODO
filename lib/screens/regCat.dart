@@ -24,18 +24,15 @@ class CustomTextFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextFormField(
-        style: TextStyle(
-            color: provider.isdarkmode() ? Colors.white : Colors.black),
+        textInputAction: TextInputAction.next,
+        style: TextStyle(color: Colors.black),
         validator: validator,
         obscureText: securedText,
         controller: controller,
         decoration: InputDecoration(
             errorMaxLines: 2,
             labelText: label,
-            labelStyle: TextStyle(
-                color: provider.isdarkmode()
-                    ? Appcolors.whiteColor
-                    : Appcolors.blackColorCategory),
+            labelStyle: TextStyle(color: Appcolors.blackColorCategory),
             focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
                 borderSide: BorderSide(color: Appcolors.redColor)),

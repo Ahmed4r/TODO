@@ -10,6 +10,7 @@ class MyThemeData {
         color: Appcolors.blueColor,
         elevation: 0,
       ),
+    
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
           showUnselectedLabels: false,
           selectedItemColor: Appcolors.blueColor,

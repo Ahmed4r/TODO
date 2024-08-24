@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todolist/appcolor.dart';
 import 'package:todolist/screens/login.dart';
 import 'package:todolist/screens/regCat.dart';
+import 'package:todolist/themeData.dart';
 
 class RegisterScreen extends StatelessWidget {
   static const String routeName = 'RegisterPage';
@@ -17,9 +18,38 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text("Register"),
-          centerTitle: true,
+          leading: IconButton(
+            alignment: Alignment.topLeft,
+            icon: Icon(Icons.arrow_back,
+                color: const Color.fromARGB(255, 247, 246, 246)),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          toolbarHeight: MediaQuery.of(context).size.height * 0.25,
+          backgroundColor: Color(0xff0E1E2F),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Register",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Create your account",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+
+          // centerTitle: true,
+          elevation: 0,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -92,6 +122,13 @@ class RegisterScreen extends StatelessWidget {
                       },
                     ),
                     ElevatedButton(
+                        style: ButtonStyle(
+                            shape:
+                                WidgetStatePropertyAll(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            )),
+                            backgroundColor:
+                                WidgetStatePropertyAll(Color(0xffC7E780))),
                         onPressed: () {
                           register(context);
                         },

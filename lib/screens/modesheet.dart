@@ -19,7 +19,7 @@ class _ModesheetState extends State<Modesheet> {
 
     return Container(
       color: provider.isdarkmode() ? Color(0xff2E2E2E) : Colors.white,
-      // margin: EdgeInsets.all(15),
+      
       padding: EdgeInsets.all(15),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 1,
