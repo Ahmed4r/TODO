@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:todolist/appcolor.dart';
+import 'package:todolist/providers/app_config_provider.dart';
 import 'package:todolist/screens/Task_listscreen.dart';
 import 'package:todolist/screens/settingscreen.dart';
 import 'package:todolist/screens/taskSheet.dart';
@@ -21,6 +23,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AppConfigProvider>(context);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height * 0.25,
@@ -30,6 +33,7 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: provider.isdarkmode() ? Color(0xff2E2E2E) : Colors.white,
         shape: CircularNotchedRectangle(),
         notchMargin: 13,
         child: BottomNavigationBar(

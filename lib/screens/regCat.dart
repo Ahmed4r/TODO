@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist/appcolor.dart';
+import 'package:todolist/providers/app_config_provider.dart';
 
 typedef MyValidator = String? Function(String?);
 
@@ -18,9 +20,11 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AppConfigProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextFormField(
+        textInputAction: TextInputAction.next,
         style: TextStyle(color: Colors.black),
         validator: validator,
         obscureText: securedText,
@@ -28,6 +32,7 @@ class CustomTextFormField extends StatelessWidget {
         decoration: InputDecoration(
             errorMaxLines: 2,
             labelText: label,
+            labelStyle: TextStyle(color: Appcolors.blackColorCategory),
             focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
                 borderSide: BorderSide(color: Appcolors.redColor)),

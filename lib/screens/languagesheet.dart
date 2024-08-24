@@ -15,8 +15,10 @@ class _LanguagesheetState extends State<Languagesheet> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
+    var isdark = provider.isdarkmode();
     return Container(
-      margin: EdgeInsets.all(15),
+      color: provider.isdarkmode() ? Color(0xff2E2E2E) : Colors.white,
+      padding: EdgeInsets.all(15),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 1,
         child: Column(
@@ -33,7 +35,7 @@ class _LanguagesheetState extends State<Languagesheet> {
                         ? getSelectedItemWidget(
                             AppLocalizations.of(context)!.english)
                         : getUnselectedItemWidget(
-                            AppLocalizations.of(context)!.english))),
+                            AppLocalizations.of(context)!.english, isdark))),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
@@ -44,7 +46,7 @@ class _LanguagesheetState extends State<Languagesheet> {
                       ? getSelectedItemWidget(
                           AppLocalizations.of(context)!.arabic)
                       : getUnselectedItemWidget(
-                          AppLocalizations.of(context)!.arabic)),
+                          AppLocalizations.of(context)!.arabic, isdark)),
             ),
           ],
         ),
@@ -72,11 +74,13 @@ class _LanguagesheetState extends State<Languagesheet> {
     );
   }
 
-  Widget getUnselectedItemWidget(String text) {
+  Widget getUnselectedItemWidget(String text, isdark) {
     return Text(
       text,
-      style:
-          Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
+      style: Theme.of(context)
+          .textTheme
+          .bodyLarge
+          ?.copyWith(color: isdark == true ? Colors.white : Colors.black),
     );
   }
 }

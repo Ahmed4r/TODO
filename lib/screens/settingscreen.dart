@@ -23,13 +23,14 @@ class _SettingscreenState extends State<Settingscreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            AppLocalizations.of(context)!.language,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: Colors.black),
-            selectionColor: Colors.black,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              AppLocalizations.of(context)!.language,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: provider.isdarkmode() ? Colors.white : Colors.black),
+              selectionColor: Colors.black,
+            ),
           ),
           SizedBox(
             height: 50,
@@ -37,7 +38,9 @@ class _SettingscreenState extends State<Settingscreen> {
               padding: EdgeInsets.all(4),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Appcolors.whiteColor,
+                  color: provider.isdarkmode()
+                      ? const Color.fromARGB(255, 34, 40, 52)
+                      : Appcolors.whiteColor,
                   border: Border.all(color: Appcolors.blueColor)),
               child: InkWell(
                 onTap: () {
@@ -51,10 +54,15 @@ class _SettingscreenState extends State<Settingscreen> {
                             ? AppLocalizations.of(context)!.english
                             : AppLocalizations.of(context)!.arabic,
                         style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: 19,
                             fontWeight: FontWeight.w400,
                             color: Appcolors.blueColor)),
-                    Icon(Icons.arrow_drop_down)
+                    Icon(
+                      Icons.arrow_drop_down,
+                      color: provider.isdarkmode()
+                          ? const Color.fromARGB(255, 255, 255, 255)
+                          : Appcolors.blackColorCategory,
+                    )
                   ],
                 ),
               ),
@@ -63,12 +71,13 @@ class _SettingscreenState extends State<Settingscreen> {
           SizedBox(
             height: 10,
           ),
-          Text(
-            AppLocalizations.of(context)!.mode,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: Colors.black),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              AppLocalizations.of(context)!.mode,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: provider.isdarkmode() ? Colors.white : Colors.black),
+            ),
           ),
           SizedBox(
             height: 50,
@@ -76,7 +85,9 @@ class _SettingscreenState extends State<Settingscreen> {
               padding: EdgeInsets.all(4),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Appcolors.whiteColor,
+                  color: provider.isdarkmode()
+                      ? const Color.fromARGB(255, 34, 40, 52)
+                      : Appcolors.whiteColor,
                   border: Border.all(color: Appcolors.blueColor)),
               child: InkWell(
                 onTap: () {
@@ -90,10 +101,15 @@ class _SettingscreenState extends State<Settingscreen> {
                             ? AppLocalizations.of(context)!.light
                             : AppLocalizations.of(context)!.dark,
                         style: GoogleFonts.inter(
-                            fontSize: 14,
+                            fontSize: 19,
                             fontWeight: FontWeight.w400,
                             color: Appcolors.blueColor)),
-                    Icon(Icons.arrow_drop_down)
+                    Icon(
+                      Icons.arrow_drop_down,
+                      color: provider.isdarkmode()
+                          ? const Color.fromARGB(255, 255, 255, 255)
+                          : const Color.fromARGB(255, 0, 0, 0),
+                    )
                   ],
                 ),
               ),

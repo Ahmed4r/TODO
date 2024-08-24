@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,6 +42,7 @@ class _EdittaskState extends State<Edittask> {
           ? Appcolors.blackColorCategory
           : Appcolors.whiteColor,
       width: MediaQuery.of(context).size.width * 1,
+      height: MediaQuery.of(context).size.height * 1,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(8.0),
         child: Column(

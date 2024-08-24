@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:todolist/firebase/firebase_utils.dart';
 import 'package:todolist/model/task.dart';
@@ -7,7 +6,7 @@ class ListProvider extends ChangeNotifier {
   List<Task> taskList = [];
   var selectDate = DateTime.now();
 
-  void getAllTaskFromFireStore() async {
+  Future<void> getAllTaskFromFireStore() async {
     var querySnap = await FirebaseUtils.getTasksCollection().get();
     taskList = querySnap.docs.map((doc) => doc.data()).toList();
 
@@ -23,12 +22,8 @@ class ListProvider extends ChangeNotifier {
       },
     ).toList();
 
-    // Log the number of filtered tasks
-
-    // Notify listeners after filtering
-    //sorting
     taskList.sort((a, b) => a.dateTime.compareTo(b.dateTime));
-    
+
     notifyListeners();
   }
 
