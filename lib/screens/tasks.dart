@@ -71,7 +71,7 @@ class _TasksState extends State<Tasks> {
           height: MediaQuery.of(context).size.height * 0.17, // Reduced height
           decoration: BoxDecoration(
             color: appprovider.isdarkmode()
-                ? Appcolors.blackColorCategory
+                ? const Color.fromARGB(255, 46, 45, 45)
                 : Appcolors.whiteColor,
             borderRadius: BorderRadius.circular(15),
           ),

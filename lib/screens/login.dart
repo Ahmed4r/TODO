@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist/appcolor.dart';
+import 'package:todolist/providers/app_config_provider.dart';
 import 'package:todolist/screens/homepage.dart';
 import 'package:todolist/screens/regCat.dart';
 import 'package:todolist/screens/register_screen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -18,17 +19,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController EmailController = TextEditingController();
+  TextEditingController EmailController =
+      TextEditingController(text: "ahmed@gmail.com");
 
-  TextEditingController PasswordController = TextEditingController();
+  TextEditingController PasswordController =
+      TextEditingController(text: "123456");
 
   var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AppConfigProvider>(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text("Login "),
+          title: Text(
+            "Login ",
+            style: TextStyle(color: Appcolors.whiteColor),
+          ),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -41,7 +48,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text("Welcome Back"),
+                      child: Text(
+                        "please sign in first",
+                        style: TextStyle(
+                            color: provider.isdarkmode()
+                                ? Appcolors.whiteColor
+                                : Appcolors.blackColorCategory,
+                            fontSize: 18),
+                      ),
                     ),
                     CustomTextFormField(
                       keyboardType: TextInputType.emailAddress,
@@ -77,18 +91,29 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          Loginfunc();
-                        },
-                        child: Text(
-                          "Login",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Appcolors.blackColorCategory),
-                        )),
                     Container(
+                      width: double.maxFinite,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Loginfunc();
+                          },
+                          child: Text(
+                            "Login",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(color: Appcolors.blackColorCategory),
+                          )),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(RegisterScreen.routeName);
+                        },
+                        child: Text('Or Create Account',
+                            style: TextStyle(color: Colors.blue))),
+                    Container(
+                      // color: Colors.transparent,
                       width: 300,
                       height: 80,
                       child: Row(
@@ -107,19 +132,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 signInWithGoogle();
                               },
-                              child: Text('Sign-in with Google'))
+                              child: Text(
+                                'Sign-in with Google',
+                                style: TextStyle(color: Appcolors.blueColor),
+                              ))
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(RegisterScreen.routeName);
-                          },
-                          child: Text('Or Create Account',
-                              style: TextStyle(color: Colors.blue))),
                     ),
                   ],
                 ),

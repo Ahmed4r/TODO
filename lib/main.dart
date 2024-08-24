@@ -10,6 +10,7 @@ import 'package:todolist/screens/login.dart';
 import 'package:todolist/screens/register_screen.dart';
 import 'package:todolist/themeData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
