@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:todolist/appcolor.dart';
 
 class MyThemeData {
+  static const String  routename ='theme_screen';
   static final ThemeData ligthTheme = ThemeData(
       primaryColor: Appcolors.blueColor,
       scaffoldBackgroundColor: Appcolors.backgroundLightColor,

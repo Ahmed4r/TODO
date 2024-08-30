@@ -5,6 +5,7 @@ import 'package:todolist/appcolor.dart';
 import 'package:todolist/providers/app_config_provider.dart';
 
 class Languagesheet extends StatefulWidget {
+  static const String routename = 'language_screen';
   const Languagesheet({super.key});
 
   @override
@@ -28,7 +29,7 @@ class _LanguagesheetState extends State<Languagesheet> {
             Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
-                    onTap: () {
+                    onTap: ()  {
                       provider.changeLanguage('en');
                     },
                     child: provider.applanguage == 'en'

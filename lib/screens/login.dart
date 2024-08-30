@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,10 +20,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController EmailController =
-      TextEditingController();
+      TextEditingController(text: "ahmed@gmail.com");
 
   TextEditingController PasswordController =
-      TextEditingController();
+      TextEditingController(text: "123456");
 
   var formKey = GlobalKey<FormState>();
 
