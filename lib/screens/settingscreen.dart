@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/appcolor.dart';
+import 'package:todolist/l10n/app_localizations.dart';
 import 'package:todolist/providers/app_config_provider.dart';
 import 'package:todolist/screens/languagesheet.dart';
 import 'package:todolist/screens/modesheet.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class Settingscreen extends StatefulWidget {
   const Settingscreen({super.key});

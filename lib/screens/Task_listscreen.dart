@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todolist/providers/app_config_provider.dart';
 import 'package:todolist/providers/list_provider.dart';
 import 'package:todolist/screens/tasks.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class Listscreen extends StatefulWidget {
   Listscreen({super.key});
