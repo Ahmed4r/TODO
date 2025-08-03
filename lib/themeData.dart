@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:todolist/appcolor.dart';
 
 class MyThemeData {
-  static const String  routename ='theme_screen';
+  static const String routename = 'theme_screen';
   static final ThemeData ligthTheme = ThemeData(
       primaryColor: Appcolors.blueColor,
       scaffoldBackgroundColor: Appcolors.backgroundLightColor,
@@ -11,7 +11,9 @@ class MyThemeData {
         color: Appcolors.blueColor,
         elevation: 0,
       ),
-    
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+    hoverColor: Colors.transparent,
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
           showUnselectedLabels: false,
           selectedItemColor: Appcolors.blueColor,
@@ -27,6 +29,9 @@ class MyThemeData {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
               side: BorderSide(color: Appcolors.blueColor, width: 2))));
+
+
+
   static final ThemeData darkTheme = ThemeData(
     primaryColor: Appcolors.blueColor,
     scaffoldBackgroundColor: Appcolors.backgroundDarkColor,
@@ -34,7 +39,12 @@ class MyThemeData {
       color: Appcolors.blueColor,
       elevation: 0,
     ),
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+    hoverColor: Colors.transparent,
+    
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      
         unselectedItemColor: Appcolors.grey,
         selectedItemColor: Appcolors.blueColor,
         showUnselectedLabels: false),
@@ -49,6 +59,5 @@ class MyThemeData {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
             side: BorderSide(color: Appcolors.blueColor, width: 2))),
-    
   );
 }

@@ -39,6 +39,7 @@ class _HomepageState extends State<Homepage> {
         child: BottomNavigationBar(
             showUnselectedLabels: false,
             elevation: 0,
+        
             backgroundColor: Colors.transparent,
             selectedItemColor: Appcolors.blueColor,
             onTap: (index) {

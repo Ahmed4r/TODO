@@ -24,6 +24,7 @@ class _ListscreenState extends State<Listscreen> {
       child: Column(
         children: [
           EasyDateTimeLine(
+            
             headerProps: EasyHeaderProps(
               selectedDateStyle: TextStyle(
                   color: provider.isdarkmode() ? Colors.white : Colors.black),
@@ -35,6 +36,7 @@ class _ListscreenState extends State<Listscreen> {
             onDateChange: (selectedDate) {
               listprovider.changeSelectedDate(selectedDate);
             },
+           
             activeColor: const Color(0xff85A389),
             dayProps: EasyDayProps(
               inactiveDayNumStyle: TextStyle(
@@ -42,7 +44,19 @@ class _ListscreenState extends State<Listscreen> {
                   fontSize: 21,
                   fontWeight: FontWeight.bold),
               todayHighlightStyle: TodayHighlightStyle.withBackground,
-              todayHighlightColor: Color(0xffE1ECC8),
+              inactiveMothStrStyle: TextStyle(
+                  color: isdark == true ? Colors.white : Colors.black,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold),
+              inactiveDayStrStyle: TextStyle(
+                  color: isdark == true ? Colors.white : Colors.black,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold),
+              inactiveDayStyle: DayStyle(dayNumStyle: TextStyle(
+                  color: isdark == true ? Colors.white : Colors.black,
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold)),
+              todayHighlightColor: Color.fromARGB(255, 87, 92, 75),
             ),
           ),
           Expanded(
