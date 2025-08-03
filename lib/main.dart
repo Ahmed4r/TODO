@@ -32,7 +32,6 @@ void main() async {
     child: TodoList(),
   ));
 }
-
 class TodoList extends StatelessWidget {
   const TodoList({super.key});
 
