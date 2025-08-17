@@ -24,7 +24,7 @@ flutter_ios_podfile_setup
 
 target 'Runner' do
   # Avoid modular headers; they break gRPC/Firebase on CI due to missing modulemaps.
-  # use_modular_headers!
+  use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 

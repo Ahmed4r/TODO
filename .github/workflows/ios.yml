@@ -18,7 +18,7 @@ jobs:
 
       - name: Flutter bootstrap
         run: |
-          flutter --version
+        
           flutter clean
           flutter pub get
 
