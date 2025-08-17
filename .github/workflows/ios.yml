@@ -6,25 +6,31 @@ on:
 jobs:
   build-ios:
     name: 🎉 iOS Build
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v3
 
+      # Select stable Flutter
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.32.5'
           channel: 'stable'
-          architecture: x64
+
+      # Select Xcode 15.3 explicitly (has iOS 17 SDK)
+      - name: Select Xcode 15.3
+        run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
 
       - run: flutter pub get
 
-      # Ensure the Podfile has the correct platform
+      # Ensure the Podfile has correct platform
       - name: Set iOS deployment target
         run: |
           cd ios
-          if ! grep -q "platform :ios, '15.5'" Podfile; then
-            echo "platform :ios, '15.5'" | cat - Podfile > temp && mv temp Podfile
+          if ! grep -q "platform :ios, '13.0'" Podfile; then
+            echo "platform :ios, '13.0'" | cat - Podfile > temp && mv temp Podfile
           fi
           cd ..
+
       # Clean and reinstall CocoaPods
       - name: Clean and update CocoaPods
         run: |
@@ -34,8 +40,11 @@ jobs:
           pod deintegrate
           pod install
           cd ..
+
+      # Build iOS release
       - run: flutter build ios --release --no-codesign
 
+      # Package .ipa
       - run: mkdir Payload
         working-directory: build/ios/iphoneos
 
@@ -46,6 +55,7 @@ jobs:
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
         working-directory: build/ios/iphoneos
 
+      # Upload IPA to GitHub release
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
