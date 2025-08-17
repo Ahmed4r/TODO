@@ -18,9 +18,16 @@ jobs:
 
       - name: Flutter bootstrap
         run: |
-        
+
           flutter clean
           flutter pub get
+
+      - name: Ensure modular headers in Podfile
+        run: |
+          cd ios
+          if ! grep -q "use_modular_headers!" Podfile; then
+            sed -i.bak '/target \'Runner\' do/a \\n  use_modular_headers!' Podfile
+          fi
 
       - name: Prepare iOS Pods (fresh install)
         run: |
