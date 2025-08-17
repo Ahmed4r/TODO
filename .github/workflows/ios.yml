@@ -1,79 +1,56 @@
-name: iOS-ipa-build
+name: Build iOS IPA (Flutter + Supabase)
 
 on:
   workflow_dispatch:
 
 jobs:
   build-ios:
-    name: 🎉 iOS Build
-    runs-on: macos-15
+    runs-on: macos-14
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      # Flutter cache
-      - name: Cache Flutter dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.pub-cache
-            .packages
-            .dart_tool
-          key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.lock') }}
-          restore-keys: ${{ runner.os }}-flutter-
-
-      # CocoaPods cache
-      - name: Cache CocoaPods
-        uses: actions/cache@v3
-        with:
-          path: ios/Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
-          restore-keys: ${{ runner.os }}-pods-
-
-      # Select Flutter
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.32.5'
-          channel: 'stable'
-
-      # Select Xcode 15.3 explicitly
-      - name: Select Xcode 15.3
-        run: sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer
+          flutter-version: "3.32.5"
+          channel: stable
+          cache: true
 
       - run: flutter pub get
 
-      # Ensure Podfile platform
-      - name: Set iOS deployment target
+      - name: Prepare iOS Pods
         run: |
           cd ios
-          if ! grep -q "platform :ios, '13.0'" Podfile; then
-            echo "platform :ios, '13.0'" | cat - Podfile > temp && mv temp Podfile
-          fi
-          cd ..
+          pod repo update
+          pod install
 
-      # Install CocoaPods (skip pod repo update every time)
-      - name: Install CocoaPods
-        run: |
+      - run: flutter precache --ios
+      - run: |
           cd ios
-          pod install --verbose
-          cd ..
+          pod repo update
+          pod install
 
-      # Build iOS release
+      # Build .app without codesign
       - run: flutter build ios --release --no-codesign
 
-      # Package IPA
+      # Create Payload folder and move .app inside
       - run: mkdir Payload
         working-directory: build/ios/iphoneos
 
-      - run: mv Runner.app/ Payload
+      - run: mv Runner.app Payload
         working-directory: build/ios/iphoneos
 
+      # Zip Payload as .ipa
       - name: Zip output
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
         working-directory: build/ios/iphoneos
 
-      # Upload IPA as artifact instead of Release
-      - name: Upload IPA artifact
-        uses: actions/upload-artifact@v4
+      # Upload IPA to GitHub Release
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: FlutterIpaExport
-          path: build/ios/iphoneos/FlutterIpaExport.ipa
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/ios/iphoneos/FlutterIpaExport.ipa
+          tag: v1.0
+          overwrite: true
+          body: "This is first release"
