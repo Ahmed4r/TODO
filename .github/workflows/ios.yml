@@ -16,19 +16,23 @@ jobs:
           channel: stable
           cache: true
 
-      - run: flutter pub get
+      - name: Flutter bootstrap
+        run: |
+          flutter --version
+          flutter clean
+          flutter pub get
 
-      - name: Prepare iOS Pods
+      - name: Prepare iOS Pods (fresh install)
         run: |
           cd ios
+          pod --version
           pod repo update
-          pod install
+          pod deintegrate
+          rm -rf Pods Podfile.lock
+          pod cache clean --all
+          pod install --repo-update
 
       - run: flutter precache --ios
-      - run: |
-          cd ios
-          pod repo update
-          pod install
 
       # Build .app without codesign
       - run: flutter build ios --release --no-codesign
